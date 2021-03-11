@@ -1,0 +1,27 @@
+
+
+#wrapper #pageBody #comments ol li:nth-child(2n) {
+	background-color: #99CC66;
+}
+#wrapper #pageBody #comments ol li:nth-child(2n+1) {
+	background-color: #FBFBCE;
+}
+/*Forms layout*/
+#wrapper #pageBody form fieldset {
+	border: 1px solid #333;
+	-moz-border-radius:5px;
+	-webkit-border-radius:5px;
+	border-radius:5px;
+}
+#wrapper #pageBody form dl dt {
+	font-weight:bold;
+	color:#7A0000;
+	margin-bottom:5px;
+	clear:left;
+}
+#wrapper #pageBody form dl dd {
+	margin-left:30px;
+	margin-bottom:20px;
+	clear:left;
+}
+
