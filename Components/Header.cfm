@@ -31,10 +31,9 @@
          		 <cfif isUserLoggedIn()>
 
          
-         	<li class="menu__item"><a class="menu__list-link" href="index.cfm?logout">LogOut</a></li>
+         	<li class="menu__item"><a class="menu__list-link" href="profile.cfm">My profile</a></li>
                 
-    	<cfelse>
-    	<li class="menu__item"><a class="menu__list-link" href="log.cfm">Login</a></li>
+    
          	
     	</cfif>
 
