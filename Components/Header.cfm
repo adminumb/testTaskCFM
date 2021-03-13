@@ -1,39 +1,15 @@
-<cfif structKeyExists(form, 'loginSubmit')>
-	 <cfset error=Arraynew(1)/>
-	 	<!--- Валидация имени--->
-    <cfif form.username EQ ''>
-    	<cfset arrayAppend(error, 'Введите логин')/>
-    </cfif>
-    
-    <cfif form.password EQ ''>
-    	<cfset arrayAppend(error, 'Введите пароль')/>
-    </cfif>
-    
-    
-     <cfif ArrayisEmpty(error)>
-    	<!---Если все ок тада --->
-    
-    	<cfquery datasource='mysqBD'>
-    		insert into user (name, password) values('#form.username#', '#form.password#')
-    	        	
-
-    	</cfquery>
-    	<cflocation url="registration.cfm" >
-    </cfif>
-</cfif>
-
-
+	
 
 
 <!DOCTYPE html>
 <head>
 	<meta charset="utf-8">
-	<title>Login Form</title>
+	<title></title>
 	<link rel="icon" href="http://vladmaxi.net/favicon.ico" type="image/x-icon">
 	<link rel="shortcut icon" href="http://vladmaxi.net/favicon.ico" type="image/x-icon">
-	<link rel="stylesheet" type="text/css" href="/cfTraining/styles/loginStyle.css" />
-	<link href="/cfTraining/styles/style.css" rel="stylesheet" type="text/css" media="screen" />
-	<link href="/cfTraining/styles/hdStreet.css" rel="stylesheet" type="text/css" media="screen" />
+	<link rel="stylesheet" type="text/css" href="../cfTraining/styles/loginStyle.css" />
+	<link href="../cfTraining/styles/style.css" rel="stylesheet" type="text/css" media="screen" />
+	<link href="../cfTraining/styles/hdStreet.css" rel="stylesheet" type="text/css" media="screen" />
 	
 </head>
 <body>
@@ -47,28 +23,26 @@
           <nav class="menu">
               <ul class="menu__list">
                 <li class="menu__item"><a class="menu__list-link" href="registration.cfm">New Task</a></li>
-      <li class="menu__item"><a class="menu__list-link" href="news.cfm">Tasks list</a></li>
-            <li class="menu__item"><a class="menu__list-link" href="login.cfm">Login</a></li>
+      <li class="menu__item"><a class="menu__list-link" href="tables2.cfm">Tasks list</a></li>
+         
+               <li class="menu__item"><a class="menu__list-link" href="story.cfm">Your story</a></li>
+
+         
+         		 <cfif isUserLoggedIn()>
+
+         
+         	<li class="menu__item"><a class="menu__list-link" href="index.cfm?logout">LogOut</a></li>
+                
+    	<cfelse>
+    	<li class="menu__item"><a class="menu__list-link" href="log.cfm">Login</a></li>
+         	
+    	</cfif>
 
               </ul>
           </nav>
           </div>
       </div>
   </header>
-	
-	
-
-
-	<div id="wrapper">
-
-	<cfform id="slick-login">
-		<label for="username">Логин:</label>
-		<cfinput type="text" name="username" id="username" class="placeholder" placeholder="login" required="true" message="Please enter your login">
-		<label for="password">Пароль:</label><input type="password" name="password" id="password" class="placeholder" placeholder="password" required="true" message="Please enter your password">
-		<input type="submit" value="ВОЙТИ" name="loginSubmit" id="loginSubmit">
-	</cfform>
-	</div>
-	
-	
-</body>
-</html>
+  
+ </body>
+ </html>

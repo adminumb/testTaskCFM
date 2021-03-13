@@ -15,9 +15,9 @@ li{
 }
 
 .container{
-    max-width: 1220px;
-    padding: 0 10px;
-    margin: 0 auto;
+border-radius: 5px;    
+  background-color: #f2f2f2;    
+  padding: 20px; 
 }
 body{
     font-size: 16px;
@@ -27,7 +27,7 @@ body{
 
 
 header{
-    background: #332208;
+    background: #3FBF6C;
 
 }
 
@@ -67,4 +67,5 @@ header{
 /*hover- при наведении мышью*/
 .menu__list-link:hover{
     border-bottom: 1px solid #FEFEFE;
+    color:#323B55;
 }
