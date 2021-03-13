@@ -163,10 +163,13 @@ input[type=submit]:hover {
  <cfif isDefined('url.task_id')>
 		
 		<cfquery datasource="mysqBD" name="singleNews">
-			select descr, title, time, result, name, task_id,user_id,comment
+			select descr, title, time, result, name, task_id,user_id,comment,critical,status,urgency
 			from general_info
 			inner join result_tb using(result_id)
-			inner join user using(user_id)
+			inner join user using(user_id)			
+			inner join status_tb using(status_id)
+			inner join critical using(critical_id)
+			inner join urgency using(urgency_id)
 			where task_id =#url.task_id#
 		</cfquery>
 		    <cfoutput query="singleNews" >
@@ -182,7 +185,10 @@ input[type=submit]:hover {
             <th>Описание</th>
              <th>Комментарий</th>
              <th>Оценка</th>
-            <th>Дата</th>
+             <th>Статус</th>
+              <th>Критичность</th>
+               <th>Срочность</th>
+            <th>Дата последнего изменения</th>
 
         </tr>
         </thead>
@@ -195,6 +201,9 @@ input[type=submit]:hover {
             <td>#descr#</td>
   			<td>#comment#</td>
   			 <td>#result#</td>
+  			  <td>#status#</td>
+  			   <td>#critical#</td>
+  			    <td>#urgency#</td>
   			 <td>#time#</td>
 
             
@@ -213,16 +222,27 @@ input[type=submit]:hover {
 		    </cfoutput>
 <!---Переход на форму с редактированием--->
 	<cfelseif isDefined('url.change') >
-				
 					<cfquery datasource="mysqBD" name="qq">
-			select descr, title, time, result, name, task_id,result_id
+			select descr, title, time, result, name, task_id,user_id,comment,critical,status,urgency
 			from general_info
 			inner join result_tb using(result_id)
-			inner join user using(user_id)
+			inner join user using(user_id)			
+			inner join status_tb using(status_id)
+			inner join critical using(critical_id)
+			inner join urgency using(urgency_id)
 			where task_id =#url.change#
 		</cfquery>
 		<cfquery datasource="mysqBD" name="result">
 			select result, result_id from result_tb
+		</cfquery>
+		<cfquery datasource="mysqBD" name="status">
+			select status, status_id from status_tb
+		</cfquery>
+		<cfquery datasource="mysqBD" name="critical">
+			select critical, critical_id from critical
+		</cfquery>
+		<cfquery datasource="mysqBD" name="urgency">
+			select urgency, urgency_id from urgency
 		</cfquery>
                    
                    <!--- Валидация на форму--->
@@ -233,7 +253,23 @@ input[type=submit]:hover {
 	<cfif form.title_change EQ ''>
     	<cfset arrayAppend(changeErr, 'Пожалуйста задайте название')/>
     </cfif> 	
-	 	
+    <cfif form.changeStatus NEQ '' and form.changeStatus NEQ #status.status_id# and form.changeComment eq '#qq.comment#' >
+    	<cfset arrayAppend(changeErr, 'При смене статуса необходимо оставить комментарий')/>
+    </cfif> 
+    
+    
+    
+    
+	 	 <cfif form.changeCritical EQ ''>
+    	<cfset arrayAppend(changeErr, 'Пожалуйста задайте критичность')/>
+    </cfif>
+    <cfif form.changeUrgency EQ ''>
+    	<cfset arrayAppend(changeErr, 'Пожалуйста задайте срочность')/>
+    </cfif> 
+    
+    <cfif form.changeUrgency EQ ''>
+    	<cfset arrayAppend(changeErr, 'Пожалуйста задайте срочность')/>
+    </cfif>
     
     <cfif form.changeDesc EQ ''>
     	<cfset arrayAppend(changeErr, 'Задайте последовательность теста')/>
@@ -268,7 +304,7 @@ input[type=submit]:hover {
 <cfform>
  <div class="row">    
       <div class="col-25">    
-        <label for="fname">Название</label>    
+        <label for="fname">Название*</label>    
       </div>    
       <div class="col-75">    
 <cfinput name="title_change" id="title_change" value="#qq.title#" required="true" message="Пожалуйста введите название" /> 
@@ -278,7 +314,7 @@ input[type=submit]:hover {
      
  <div class="row">    
       <div class="col-25">    
-        <label for="feed_back">Описание</label>    
+        <label for="feed_back">Описание*</label>    
       </div>    
       <div class="col-75">
       	<cftextarea name="changeDesc" value="#qq.descr#" id="changeDesc" required="true" message="Пожалуйста введите описание" style="height:200px" ></cftextarea>    
@@ -287,7 +323,7 @@ input[type=submit]:hover {
        
     <div class="row">    
       <div class="col-25">    
-        <label for="feed_back">Оценка</label>    
+        <label for="feed_back">Оценка*</label>    
       </div>    
       <div class="col-75">
       	<cfselect name="changeResult" id="changeResult" query="result" value="result_id" display="result" queryposition="below" required="true" message="Пожалуйста задайте результат" >
@@ -297,6 +333,41 @@ input[type=submit]:hover {
       	 </div>    
     </div>    
     
+     <div class="row">    
+      <div class="col-25">    
+        <label for="feed_back">Статус*</label>    
+      </div>    
+      <div class="col-75">
+      	<cfselect name="changeStatus" id="changeStatus" query="status" value="status_id" display="status" queryposition="below" required="true" message="Пожалуйста задайте статус" >
+			<option value='#status.status_id#'>#status.status#</option>
+										</cfselect>
+
+      	 </div>    
+    </div>  
+    
+    <div class="row">    
+      <div class="col-25">    
+        <label for="feed_back">Критичность*</label>    
+      </div>    
+      <div class="col-75">
+      	<cfselect name="changeCritical" id="changeCritical" query="critical" value="critical_id" display="critical" queryposition="below" required="true" message="Пожалуйста установите критичность" >
+			<option value='#critical.critical#'>#critical.critical#</option>
+										</cfselect>
+
+      	 </div>    
+    </div>
+    
+    <div class="row">    
+      <div class="col-25">    
+        <label for="feed_back">Срочность</label>    
+      </div>    
+      <div class="col-75">
+      	<cfselect name="changeUrgency" id="changeUrgency" query="urgency" value="urgency_id" display="urgency" queryposition="below" required="true" message="Пожалуйста установите срочность" >
+			<option value='#urgency.urgency#'>#urgency.urgency#</option>
+										</cfselect>
+
+      	 </div>    
+    </div>    
     
     
     
@@ -305,7 +376,7 @@ input[type=submit]:hover {
         <label for="feed_back">Комментарий</label>    
       </div>    
       <div class="col-75">
-      	<cftextarea name="changeComment" id="changeComment" ></cftextarea>
+      	<cftextarea name="changeComment" id="changeComment" >#qq.comment#</cftextarea>
       	   </div>    
     </div> 
      <div class="row">  

@@ -15,10 +15,19 @@
     </cfif>
     
     <cfif form.resultList EQ '0'>
-    	<cfset arrayAppend(aErrorMessages, 'Установите результат теста ')/>
+    	<cfset arrayAppend(aErrorMessages, 'Установите результат ошибки ')/>
     </cfif>
-    <cfif form.resultList EQ '0' and form.userDesc EQ '' and form.title EQ ''  >
-    	<cfset arrayAppend(aErrorMessages, 'Необходимо заполнить все обязательные поля ')/>
+    
+  <cfif form.statusList EQ '0'>
+    	<cfset arrayAppend(aErrorMessages, 'Установите результат ошибки ')/>
+    </cfif>
+    
+    
+    <cfif form.criticalList EQ '0'>
+    	<cfset arrayAppend(aErrorMessages, 'Установите уровень критичности ')/>
+    </cfif>
+    <cfif form.urgencyList EQ '0'>
+    	<cfset arrayAppend(aErrorMessages, 'Установите уровень срочности ')/>
     </cfif>
   
    
@@ -30,8 +39,9 @@
 
     	
     		
-    		insert into general_info(result_id, descr, comment,user_id, title) values(
-    		'#form.resultList#','#form.userDesc#','#form.userComment#',#session.stLoggedInUser.userID#,'#form.title#')
+    		insert into general_info(status_id,result_id, descr, comment,user_id, title, critical_id,urgency_id) values(
+    		'#form.statusList#','#form.resultList#','#form.userDesc#','#form.userComment#',#session.stLoggedInUser.userID#,'#form.title#',
+    		'#form.criticalList#','#form.urgencyList#')
     
     		</cfquery>
     		
@@ -43,6 +53,35 @@
   	select result_id, result from
   	result_tb
   	order by result asc
+  	
+
+  	
+  </cfquery>
+  
+   <cfquery datasource="mysqBD" name="statusTable">
+  	select status_id, status from
+  	status_tb
+  	order by status asc
+  	
+
+  	
+  </cfquery>
+  
+  <cfquery datasource="mysqBD" name="criticalTable">
+  	select critical_id, critical from
+  	critical
+  	order by critical asc
+  	
+
+  	
+  </cfquery>
+  
+   <cfquery datasource="mysqBD" name="urgencyTable">
+  	select urgency_id, urgency from
+  	urgency
+  	order by urgency asc
+  	
+
   	
   </cfquery>
 
@@ -121,6 +160,11 @@ input[type=submit]:hover {
   content: "";    
   display: table;    
   clear: both;    
+}
+
+.errorMessage{
+	color:red;
+	font-weight:bold;
 }    
 </style>
 
@@ -178,6 +222,21 @@ input[type=submit]:hover {
     </div> 
     
        
+        <div class="row">    
+      <div class="col-25">    
+        <label for="feed_back">Статус*</label>    
+      </div>    
+      <div class="col-75">
+      	<cfselect name="statusList" id="statusID" query="statusTable" value="status_id" display="status" queryposition="below" >
+								<option value="0">Choose status</option>
+								
+							</cfselect>
+
+      	 </div>    
+    </div>  
+       
+       
+       
     <div class="row">    
       <div class="col-25">    
         <label for="feed_back">Оценка*</label>    
@@ -185,6 +244,32 @@ input[type=submit]:hover {
       <div class="col-75">
       	<cfselect name="resultList" id="resultID" query="resultTable" value="result_id" display="result" queryposition="below" >
 								<option value="0">Choose result</option>
+								
+							</cfselect>
+
+      	 </div>    
+    </div>
+     
+      <div class="row">    
+      <div class="col-25">    
+        <label for="feed_back">Критичность*</label>    
+      </div>    
+      <div class="col-75">
+      	<cfselect name="criticalList" id="criticalID" query="criticalTable" value="critical_id" display="critical" queryposition="below" >
+								<option value="0">Choose critical</option>
+								
+							</cfselect>
+
+      	 </div>    
+    </div> 
+    
+     <div class="row">    
+      <div class="col-25">    
+        <label for="feed_back">Срочность*</label>    
+      </div>    
+      <div class="col-75">
+      	<cfselect name="urgencyList" id="urgencyID" query="urgencyTable" value="urgency_id" display="urgency" queryposition="below" >
+								<option value="0">Choose urgency</option>
 								
 							</cfselect>
 
@@ -207,36 +292,6 @@ input[type=submit]:hover {
 									
 									
 
-<!---
-		<cfform class="formContainer_inner" id="frm_newUser">
-				<fieldset>
-					<legend>Регистрация нового тикета</legend>
-					<dl>
-
-                      <dd><cfinput type='text' name='userLogin' value="#lastUser.name#" hidden="true" /> </dd>
-
-					
-						<dt> <label >
-							Title
-						</label></dt>
-						<dd><cfinput type='text' name='title'/> </dd>
-						<dt><label>Dedcription</label></dt>
-						<dd><textarea name="userDesc" id="serDesc"></textarea></dd>
-						<dt><label>Comment</label></dt>
-						<dd><textarea name="userComment" id="userComment"></textarea></dd>
-							<dt><label>Result</label></dt>
-						<dd>
-							<cfselect name="resultList" id="resultID" query="resultTable" value="result_id" display="result" queryposition="below" >
-								<option value="0">Choose result</option>
-								
-							</cfselect>
-						</dd>
-					</dl>
-					<input type="submit" name="fld_newUserSubmit" id="fld_newUserSubmit" value="ГОТОВО" />
-					
-				</fieldset>
-			</cfform>
-			--->
 											</cfoutput>
 
   <div id="footer">
