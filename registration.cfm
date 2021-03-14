@@ -6,29 +6,11 @@
 	 	<!--- Валидация имени--->
 		
 	 	
-  <cfif form.title EQ ''>
-    	<cfset arrayAppend(aErrorMessages, 'Задайте название теста')/>
+  <cfif form.title EQ '' or form.userDesc EQ '' or form.resultList EQ '0' or form.statusList EQ '0'
+  or  form.criticalList EQ '0' or form.urgencyList EQ '0' >
+    	<cfset arrayAppend(aErrorMessages, 'Заполните все обязательные поля!')/>
     </cfif>
-    
-    <cfif form.userDesc EQ ''>
-    	<cfset arrayAppend(aErrorMessages, 'Задайте последовательность теста')/>
-    </cfif>
-    
-    <cfif form.resultList EQ '0'>
-    	<cfset arrayAppend(aErrorMessages, 'Установите результат ошибки ')/>
-    </cfif>
-    
-  <cfif form.statusList EQ '0'>
-    	<cfset arrayAppend(aErrorMessages, 'Установите результат ошибки ')/>
-    </cfif>
-    
-    
-    <cfif form.criticalList EQ '0'>
-    	<cfset arrayAppend(aErrorMessages, 'Установите уровень критичности ')/>
-    </cfif>
-    <cfif form.urgencyList EQ '0'>
-    	<cfset arrayAppend(aErrorMessages, 'Установите уровень срочности ')/>
-    </cfif>
+  
   
    
     
@@ -194,7 +176,8 @@ input[type=submit]:hover {
 
  <div class="row">    
       <div class="col-25">    
-        <label for="fname">Название*</label>    
+        <label for="fname" >Название*</label>    
+
       </div>    
       <div class="col-75">    
 <cfinput name="title" id="title"  /> 

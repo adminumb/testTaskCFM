@@ -253,8 +253,8 @@ input[type=submit]:hover {
 	<cfif form.title_change EQ ''>
     	<cfset arrayAppend(changeErr, 'Пожалуйста задайте название')/>
     </cfif> 	
-    <cfif form.changeStatus NEQ '' and form.changeStatus NEQ #status.status_id# and form.changeComment eq '#qq.comment#' >
-    	<cfset arrayAppend(changeErr, 'При смене статуса необходимо оставить комментарий')/>
+    <cfif form.changeComment EQ '' >
+    	<cfset arrayAppend(changeErr, 'После редактирования необходимо оставить комментарий')/>
     </cfif> 
     
     
