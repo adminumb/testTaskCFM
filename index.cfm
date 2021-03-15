@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8" />
-<title>HD Street Concert Band - Welcome</title>
+<title> Welcome</title>
 
 </head>
 <style >
